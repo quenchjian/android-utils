@@ -5,27 +5,18 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public final class Units {
 
   private static final Map<Integer, Integer> DP_PX_CACHE = new ArrayMap<>(10);
   private static final Map<Integer, Integer> SP_PX_CACHE = new ArrayMap<>(10);
 
   public static int dpToPx(Context context, int dp) {
-    Integer px = DP_PX_CACHE.get(dp);
-    if (px == null) {
-      px = (int) (dp * context.getResources().getDisplayMetrics().density);
-      DP_PX_CACHE.put(dp, px);
-    }
-    return px;
+    return DP_PX_CACHE.computeIfAbsent(dp, k -> (int) (dp * context.getResources().getDisplayMetrics().density));
   }
 
   public static int spToPx(Context context, int sp) {
-    Integer px = SP_PX_CACHE.get(sp);
-    if (px == null) {
-      px = (int) (sp * context.getResources().getDisplayMetrics().density);
-      SP_PX_CACHE.put(sp, px);
-    }
-    return px;
+    return SP_PX_CACHE.computeIfAbsent(sp, k -> (int) (sp * context.getResources().getDisplayMetrics().scaledDensity));
   }
 
   private Units() {
